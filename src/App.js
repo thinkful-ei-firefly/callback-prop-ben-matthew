@@ -10,6 +10,24 @@ class App extends Component {
     }
   };
 
+  constructor(props) {
+    super(props)
+    this.state = {
+      lists: this.props.store.lists,
+      allCards: this.props.store.allCards,
+    }
+  }
+
+  handleDelete = (id) => {
+    const {id, ...rest} = this.state.allCards;
+    this.setState({
+      allCards: rest,
+      lists: this.state.lists.map(obj => obj.cardIds.filter(cardId => cardId !== id))
+    })
+  }
+
+  addRandomCard = () => {}
+
   render() {
     const { store } = this.props
     return (
@@ -23,6 +41,7 @@ class App extends Component {
               key={list.id}
               header={list.header}
               cards={list.cardIds.map(id => store.allCards[id])}
+              handleDelete={this.handleDelete}
             />
           ))}
         </div>
