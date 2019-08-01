@@ -18,11 +18,20 @@ class App extends Component {
     }
   }
 
+  omit(obj, keyToOmit) {
+    return Object.entries(obj).reduce(
+      (newObj, [key, value]) =>
+          key === keyToOmit ? newObj : {...newObj, [key]: value},
+      {}
+    );
+  }
+
   handleDelete = (id) => {
-    const {id, ...rest} = this.state.allCards;
+    const list = this.state.lists.map(obj => obj.cardIds.filter(cardId => cardId !== id));
+    console.log(list); 
     this.setState({
-      allCards: rest,
-      lists: this.state.lists.map(obj => obj.cardIds.filter(cardId => cardId !== id))
+      allCards: this.omit(this.state.allCards, id),
+      lists: list
     })
   }
 
